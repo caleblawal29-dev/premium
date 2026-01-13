@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit Funds | TradeX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>TradeX</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="deposit.html">Deposit</a>
+            <a href="#">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Deposit Container -->
+    <div class="deposit-container">
+        <h2>Deposit Funds</h2>
+
+        <div class="deposit-box">
+            <p>Current Balance: $<span id="balance">12450.67</span></p>
+
+            <label>Deposit Amount ($)</label>
+            <input type="number" id="amount" placeholder="Enter amount" min="1">
+
+            <label>Payment Method</label>
+            <select id="method">
+                <option value="card">Credit / Debit Card</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="crypto">Crypto (USDT)</option>
+            </select>
+
+            <button onclick="deposit()">Deposit</button>
+
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 TradeX</p>
+    </footer>
+
+    <script src="deposit.js"></script>
+</body>
+
+</html>
+<style>
+    /* Deposit Page */
+    .deposit-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 60px;
+    }
+
+    .deposit-box {
+        background: #222;
+        padding: 30px;
+        border-radius: 10px;
+        width: 350px;
+    }
+
+    .deposit-box h2 {
+        margin-bottom: 20px;
+    }
+
+    .deposit-box label {
+        display: block;
+        margin-top: 15px;
+        color: #bbb;
+    }
+
+    .deposit-box input,
+    .deposit-box select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        background: #333;
+        border: none;
+        color: #fff;
+        border-radius: 6px;
+    }
+
+    .deposit-box button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background: #00b894;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .deposit-box button:hover {
+        opacity: 0.8;
+    }
+
+    #message {
+        margin-top: 15px;
+        text-align: center;
+    }

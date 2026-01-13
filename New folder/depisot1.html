@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit | Trade-ip</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="deposit-card">
+            <h2>Deposit Funds</h2>
+            <p class="subtitle">Choose payment method and amount</p>
+
+            <label>Deposit Amount ($)</label>
+            <input type="number" placeholder="Enter amount" min="10">
+
+            <label>Payment Method</label>
+            <div class="payment-methods">
+                <div class="method active">💳 Card</div>
+
+
+                <a href="./cryptod.html">
+                    <div class="method">₿ Crypto</div>
+                </a>
+                <a href="./bankd.html">
+
+                    <div class="method">🏦 Bank</div>
+            </div>
+            </a>
+            <button class="deposit-btn">Deposit Now</button>
+
+            <p class="note">Minimum deposit: $10</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 420px;
+        padding: 20px;
+    }
+
+    .deposit-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .deposit-card h2 {
+        text-align: center;
+        margin-bottom: 5px;
+        color: #222;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    label {
+        font-size: 14px;
+        color: #333;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    .payment-methods {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .method {
+        flex: 1;
+        text-align: center;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .method:hover {
+        border-color: #2c5364;
+    }
+
+    .method.active {
+        background: #2c5364;
+        color: #fff;
+        border-color: #2c5364;
+    }
+
+    .deposit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #2c5364;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .deposit-btn:hover {
+        background: #203a43;
+    }
+
+    .note {
+        margin-top: 15px;
+        font-size: 12px;
+        text-align: center;
+        color: #777;
+    }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit Crypto | Trading Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .deposit-box {
+            background: #020617;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #facc15;
+        }
+
+        label {
+            font-size: 14px;
+            color: #cbd5f5;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0 15px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #020617;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #facc15;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #facc15;
+            color: #020617;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover { background: #eab308; }
+
+        .wallet-info {
+            background: #111827;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .qr-code {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="deposit-box">
+    <h2>Deposit Crypto</h2>
+
+    <form onsubmit="return simulateDeposit()">
+        <label>Select Cryptocurrency</label>
+        <select id="crypto">
+            <option value="BTC">Bitcoin (BTC)</option>
+            <option value="ETH">Ethereum (ETH)</option>
+            <option value="USDT">USDT (ERC20)</option>
+        </select>
+
+        <label>Amount to Deposit</label>
+        <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.0001" required>
+
+        <button class="btn" type="submit">Generate Payment Details</button>
+    </form>
+
+    <div class="wallet-info" id="walletInfo" style="display:none;">
+        <strong>Send to Wallet Address:</strong>
+        <div id="walletAddress">-</div>
+    </div>
+
+    <div class="qr-code" id="qrCode" style="display:none;">
+        <img id="qrImage" alt="QR Code">
+    </div>
+
+    <div class="footer">
+        Real deposits only — send crypto to the generated address.
+    </div>
+</div>
+
+<script>
+    const realWallets = {
+        BTC: "Not yet available in your region. Coming soon.",
+        ETH: "Not yet available in your region. Coming soon.",
+        USDT: "0x54cf109b52630e03d29e3109a65513ff6088c67d"
+    };
+
+    function simulateDeposit() {
+        const crypto = document.getElementById("crypto").value;
+        const amount = parseFloat(document.getElementById("amount").value);
+        const address = realWallets[crypto];
+
+        if (isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid amount.");
+            return false;
+        }
+
+        document.getElementById("walletAddress").innerText = address;
+        document.getElementById("walletInfo").style.display = "block";
+
+        if (address.includes("Coming soon")) {
+            document.getElementById("qrCode").style.display = "none";
+            alert(address);
+            return false;
+        }
+
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${crypto}:${address}?amount=${amount}`;
+        document.getElementById("qrImage").src = qrUr1;
+        document.getElementById("qrCode").style.display = "block";
+
+        alert(`Send ${amount} ${crypto} to the wallet shown.`);
+        return false;
+    }
+</script>
+
+</body>
+</html>

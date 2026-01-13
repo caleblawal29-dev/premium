@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deposit via Bank Transfer | Trading-ip .Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .deposit-box {
+            background: #020617;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #facc15;
+        }
+
+        label {
+            font-size: 14px;
+            color: #cbd5f5;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0 15px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #020617;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        select:focus, input:focus, textarea:focus { outline: none; border-color: #facc15; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #facc15;
+            color: #020617;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover { background: #eab308; }
+
+        .bank-details {
+            background: #111827;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .bank-details p { margin: 6px 0; font-size: 14px; }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="deposit-box">
+    <h2>Deposit via Bank Transfer</h2>
+
+    <form onsubmit="return showBankDetails()">
+        <label>Amount to Deposit</label>
+        <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.01" required>
+
+        <label>Reference / Note (optional)</label>
+        <input type="text" id="reference" placeholder="Your reference number or note">
+
+        <button class="btn" type="submit">Get Bank Details</button>
+    </form>
+
+    <div class="bank-details" id="bankInfo" style="display:none;">
+        <p><strong>Bank Name:</strong>Palmpay.</p>
+        <p><strong>Account Number:</strong> 7071659586</p>
+        <p><strong>Account/Name:</strong>Sodiq damilare oyeniran</p>
+        <p><strong></strong></p>
+        <p><strong>Amount to Transfer:</strong> <span id="transferAmount">-</span></p>
+        <p><strong>Reference:</strong> <span id="transferRef">-</span></p>
+    </div>
+
+    <div class="footer">
+        real only — no fake banking transaction.
+    </div>
+</div>
+
+<script>
+    function showBankDetails() {
+        const amount = parseFloat(document.getElementById("amount").value);
+        const reference = document.getElementById("reference").value || "N/A";
+
+        if(isNaN(amount) || amount <= 0){
+            alert("Enter a valid amount!");
+            return false;
+        }
+
+        document.getElementById("transferAmount").innerText = amount.toFixed(2) + " USD";
+        document.getElementById("transferRef").innerText = reference;
+
+        document.getElementById("bankInfo").style.display = "block";
+
+        alert("real: Use the bank details shown to make a transfer (UI only).");
+        return false;
+    }
+</script>
+
+</body>
+</html>
