@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Successful | PRO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="deposit-body">
+    <div class="deposit-wrapper">
+        <div class="glass-card success-card">
+            <div class="success-icon">✓</div>
+            <h2>Deposit Submitted!</h2>
+            <p>Your payment is being verified by our finance team.</p>
+            
+            <div class="status-box">
+                <div class="status-row">
+                    <span>Status:</span>
+                    <span class="status-tag">Pending Review</span>
+                </div>
+                <div class="status-row">
+                    <span>Est. Time:</span>
+                    <span>10 - 30 Minutes</span>
+                </div>
+            </div>
+
+            <div class="info-note">
+                Please do not submit the same receipt twice to avoid account suspension.
+            </div>
+
+            <a href="dashboard.html" class="glow-btn text-center" style="text-decoration:none; display:block;">Return to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html> <style> /* Success Page Specifics */
+.success-card {
+    text-align: center;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(78, 204, 163, 0.2);
+    color: #4ecca3;
+    font-size: 40px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    border: 2px solid #4ecca3;
+    box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);
+}
+
+.status-box {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.status-tag {
+    color: #fbbf24; /* Warning/Pending Yellow */
+    font-weight: bold;
+}
+
+.info-note {
+    font-size: 12px;
+    color: #94a3b8;
+    background: rgba(244, 63, 94, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border-left: 3px solid #f43f5e;
+}

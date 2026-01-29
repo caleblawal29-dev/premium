@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Deposit | PRO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="deposit-body">
+    <div class="deposit-wrapper">
+        <div class="glass-card">
+            <header class="deposit-header">
+                <a href="dashboard.html" class="back-btn">✕</a>
+                <h2>Deposit Funds</h2>
+                <div class="step-indicator">Step 1 of 2</div>
+            </header>
+
+            <div class="bank-card">
+                <div class="card-chip"></div>
+                <div class="card-info">
+                    <label>Official Bank Account</label>
+                    <div class="acc-number-row">
+                        <span id="accountNum">7071659586</span>
+                        <button class="copy-icon" onclick="copyText()">Copy</button>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <div class="bank-name">PALMPAY BANK</div>
+                    <div class="holder-name">SODIQ DAMILARE OYENIRAN </div>
+                </div>
+            </div>
+
+            <div class="instruction">
+                <p>Transfer to the account above, then fill the details below.</p>
+            </div>
+
+            <form class="deposit-form">
+                <div class="premium-input">
+                    <label>Minimum Deposit Start Form ₦1000 Upward</label>
+                    <div class="input-wrapper">
+                        <span class="currency">₦</span>
+                        <input type="number" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div class="premium-input">
+                    <label>Upload Receipt</label>
+                    <label for="file-upload" class="custom-file-upload">
+                        <span id="file-name">📎 Click to attach screenshot</span>
+                    </label>
+                    <input id="file-upload" type="file" onchange="updateFileName()" />
+                </div>
+                <div>
+                    <a href="./succes.html" class="glow-btn"> I Have Made Payment
+                    </a>
+
+
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function copyText() {
+            const text = document.getElementById("accountNum").innerText;
+            navigator.clipboard.writeText(text);
+            alert("Account Number Copied!");
+        }
+
+        function updateFileName() {
+            const file = document.getElementById('file-upload').files[0];
+            if (file) document.getElementById('file-name').innerText = "✅ " + file.name;
+        }
+    </script>
+</body>
+
+</html>
+<style>
+    /* Deposit Page - Fine Style Updates */
+    .deposit-body {
+        background: #020617;
+        /* Even darker blue */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .deposit-wrapper {
+        width: 100%;
+        max-width: 450px;
+        padding: 15px;
+    }
+
+    .glass-card {
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        padding: 30px;
+    }
+
+    .deposit-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .back-btn {
+        text-decoration: none;
+        color: #94a3b8;
+        font-size: 20px;
+    }
+
+    /* The Banking Card Look */
+    .bank-card {
+        background: linear-gradient(135deg, #38bdf8 0%, #1e40af 100%);
+        padding: 25px;
+        border-radius: 20px;
+        color: white;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+        margin-bottom: 25px;
+    }
+
+    .card-chip {
+        width: 40px;
+        height: 30px;
+        background: #fbbf24;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .acc-number-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin: 5px 0 20px 0;
+    }
+
+    .copy-icon {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .card-bottom {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+
+    /* Premium Form Inputs */
+    .premium-input {
+        margin-bottom: 20px;
+    }
+
+    .input-wrapper {
+        display: flex;
+        align-items: center;
+        background: #0f172a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 5px 15px;
+    }
+
+    .currency {
+        color: #38bdf8;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .custom-file-upload {
+        display: block;
+        background: rgba(56, 189, 248, 0.05);
+        border: 1px dashed #38bdf8;
+        color: #38bdf8;
+        padding: 15px;
+        text-align: center;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .glow-btn {
+        width: 100%;
+        padding: 16px;
+        background: #38bdf8;
+        color: #0f172a;
+        border: none;
+        border-radius: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        transition: 0.3s;
+    }
+
+    .glow-btn:hover {
+        transform: scale(1.02);
+        background: #7dd3fc;
+    }

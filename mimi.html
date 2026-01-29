@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mining Earnings | TRX</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Existing Styles ... */
+        .mining-status { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 30px; color: #10b981; font-size: 14px; font-weight: bold; }
+        .status-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+        .timer-container { position: relative; display: flex; justify-content: center; margin: 40px 0; }
+        .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .timer-text span { display: block; font-size: 24px; font-weight: 800; color: white; }
+        .timer-text label { font-size: 10px; color: #94a3b8; text-transform: uppercase; }
+        .earnings-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: rgba(255, 255, 255, 0.03); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Updated Notification Popup */
+        .earn-notification {
+            position: fixed;
+            bottom: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 380px;
+            background: #1e293b;
+            border: 1px solid #38bdf8;
+            border-radius: 24px;
+            padding: 20px;
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            box-shadow: 0 -15px 50px rgba(0,0,0,0.7);
+        }
+        .earn-notification.show { bottom: 25px; }
+
+        .notif-content { display: flex; gap: 12px; color: white; font-size: 13px; margin-bottom: 15px; }
+        .agent-info p { margin: 2px 0; }
+        .agent-link { color: #38bdf8; text-decoration: none; font-weight: bold; font-size: 15px; }
+
+        /* Action Buttons Group */
+        .notif-actions { display: flex; flex-direction: column; gap: 10px; }
+        
+        .claim-btn {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .small-info { font-size: 11px; color: #64748b; margin-top: 20px; text-align: center; } 
+    </style>
+</head>
+<body class="deposit-body">
+    <div class="deposit-wrapper">
+        <div class="premium-glass-card">
+            <header class="deposit-header" style="text-align: center;">
+                <a href="dashboard.html" class="back-btn">✕</a>
+                <h2>Auto-Earnings</h2>
+            </header>
+
+            <div class="mining-status">
+                <div class="status-dot"></div>
+                <span>Mining Active</span>
+            </div>
+
+            <div class="timer-container">
+                <svg class="progress-ring" width="120" height="120">
+                    <circle class="progress-ring__circle" stroke="#38bdf8" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                </svg>
+                <div class="timer-text">
+                    <span id="countdown">59:59</span>
+                    <label>Next Drop</label>
+                </div>
+            </div>
+
+            <div class="earnings-stats">
+                <div class="stat-card">
+                    <label>Rate</label>
+                    <p>₦500 / Hr</p>
+                </div>
+                <div class="stat-card">
+                    <label>Pending</label>
+                    <p id="pending-amount">₦0.00</p>
+                </div>
+            </div>
+
+            <div id="earn-pop" class="earn-notification">
+                <div class="notif-content">
+                    <span style="font-size: 30px;">💰</span>
+                    <div class="agent-info">
+                        <p><b>Income Ready! ₦500.00</b></p>
+                        <p style="font-size: 11px; color: #94a3b8;">Contact agent via WhatsApp or Call:</p>
+                        <a href="tel:+2349018827513" class="agent-link">+234 901 882 7513</a>
+                    </div>
+                </div>
+                
+                <div class="notif-actions">
+                    <a href="https://wa.me/2349018827513?text=Hello%20Agent,%20my%20mining%20income%20of%20N500%20is%20ready.%20Please%20help%20me%20cashout." 
+                       target="_blank" class="whatsapp-btn">
+                        <span>Chat Agent on WhatsApp</span>
+                    </a>
+                    <button onclick="claimEarnings()" class="claim-btn">Claim to Balance</button>
+                </div>
+            </div>
+
+            <p class="small-info">Earnings are added  every 60 minutes.</p>
+        </div>
+    </div>
+
+    <script>
+        // Timer Logic
+        let timeLeft = 3600; 
+        const circle = document.querySelector('.progress-ring__circle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        function updateTimer() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('countdown').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            const offset = circumference - (timeLeft / 3600) * circumference;
+            circle.style.strokeDashoffset = offset;
+
+            if (timeLeft <= 0) {
+                showNotification();
+                timeLeft = 3600; 
+            } else { timeLeft--; }
+        }
+
+        function showNotification() {
+            document.getElementById('earn-pop').classList.add('show');
+            document.getElementById('pending-amount').innerText = "₦500.00";
+        }
+
+        function claimEarnings() {
+            let currentBal = parseFloat(localStorage.getItem('userBalance')) || 0;
+            localStorage.setItem('userBalance', currentBal + 500);
+            document.getElementById('earn-pop').classList.remove('show');
+            document.getElementById('pending-amount').innerText = "₦0.00";
+            alert("₦500.00 added to your balance!");
+        }
+
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

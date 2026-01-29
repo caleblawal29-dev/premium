@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Earners | TRX Leaderboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+        }
+
+        .leaderboard-wrapper {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        /* --- TOP 3 PODIUM --- */
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        .rank-card {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .rank-2 { height: 140px; width: 100px; }
+        .rank-1 { height: 170px; width: 120px; border: 2px solid #fbbf24; }
+        .rank-3 { height: 120px; width: 100px; }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            background-size: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .rank-1 .avatar { width: 65px; height: 65px; border-color: #fbbf24; }
+
+        .medal {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+        }
+
+        .name { font-size: 12px; font-weight: bold; display: block; }
+        .earn { font-size: 11px; color: #10b981; font-weight: 800; }
+
+        /* --- LIST SECTION --- */
+        .list-container {
+            background: rgba(255,255,255,0.03);
+            border-radius: 25px;
+            padding: 10px;
+        }
+
+        .user-row {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-row:last-child { border: none; }
+
+        .num { width: 30px; font-weight: bold; color: #64748b; }
+        .user-info { flex: 1; display: flex; align-items: center; gap: 12px; }
+        .small-avatar { width: 35px; height: 35px; border-radius: 50%; background: #0f172a; }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-total { font-size: 14px; color: #10b981; font-weight: 800; }
+
+    </style>
+</head>
+<body>
+
+    <div class="leaderboard-wrapper">
+        <header>
+            <a href="dashboard.html" class="back-btn">← Back</a>
+            <h3 style="margin: 0;">Weekly Top Earning</h3>
+            <div style="width: 50px;"></div>
+        </header>
+
+        <div class="podium">
+            <div class="rank-card rank-2">
+                <span class="medal">🥈</span>
+                <div class="avatar" style="background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=John')"></div>
+                <span class="name">John D.</span>
+                <span class="earn">₦410k</span>
+            </div>
+
+            <div class="rank-card rank-1">
+                <span class="medal">👑</span>
+                <div class="avatar" style="background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=Aisha')"></div>
+                <span class="name">Aisha Y.</span>
+                <span class="earn">₦850k</span>
+            </div>
+
+            <div class="rank-card rank-3">
+                <span class="medal">🥉</span>
+                <div class="avatar" style="background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=Seyi')"></div>
+                <span class="name">Seyi V.</span>
+                <span class="earn">₦295k</span>
+            </div>
+        </div>
+
+        <div class="list-container" id="leaderboard-list">
+            </div>
+    </div>
+
+    <script>
+        const topUsers = [
+            { name: "Chinedu ***", amount: "₦185,200" },
+            { name: "Blessing ***", amount: "₦142,000" },
+            { name: "Okon ***", amount: "₦98,500" },
+            { name: "Tunde ***", amount: "₦76,000" },
+            { name: "Efe ***", amount: "₦54,200" },
+            { name: "Amaka ***", amount: "₦31,000" },
+            { name: "Musa ***", amount: "₦25,500" }
+        ];
+
+        const listDiv = document.getElementById('leaderboard-list');
+
+        topUsers.forEach((user, index) => {
+            const row = `
+                <div class="user-row">
+                    <span class="num">${index + 4}</span>
+                    <div class="user-info">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${index}" class="small-avatar">
+                        <span class="user-name">${user.name}</span>
+                    </div>
+                    <span class="user-total">${user.amount}</span>
+                </div>
+            `;
+            listDiv.innerHTML += row;
+        });
+    </script>
+</body>
+</html>
