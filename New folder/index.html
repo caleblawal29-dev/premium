@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title> Avia Pro</title>
+    <style>
+        :root {
+            --msport-purple: #3b1664;
+            --msport-dark-bg: #121212;
+            --msport-yellow: #ffcb05;
+            --aviator-red: #d91d36;
+            --btn-green: #28a745;
+            --btn-purple: #6a1b9a;
+            --card-purple: #2c1a4d;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            width: 100%;
+            position: fixed;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100%;
+            background: var(--msport-dark-bg);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen { display: none; height: 100%; flex-direction: column; overflow-y: auto; }
+        .active { display: flex; }
+
+        .auth-screen { padding: 30px; text-align: center; justify-content: center; }
+        .auth-logo { color: var(--msport-yellow); font-style: italic; font-size: 38px; margin-bottom: 15px; font-weight: 900; }
+        
+        input, select { 
+            width: 100%; padding: 16px; margin-bottom: 12px; background: #222; 
+            border: 1px solid #444; border-radius: 12px; color: white; font-size: 16px;
+            outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--msport-yellow); }
+
+        .main-btn { 
+            background: var(--msport-yellow); border: none; width: 100%; padding: 18px; 
+            border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 16px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .header {
+            padding: 12px 18px;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+        .balance-display { color: #4cd137; font-weight: 800; font-size: 18px; }
+
+        .game-canvas {
+            flex-grow: 1;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        .ufc-banner {
+            position: absolute; top: 15px; text-align: center; z-index: 1;
+            border: 1px solid #333; padding: 8px 15px; border-radius: 10px; background: rgba(0,0,0,0.6);
+            width: 90%;
+        }
+        .ufc-logo { color: var(--aviator-red); font-weight: 900; font-size: 18px; }
+
+        #odds-text { font-size: 15vw; max-font-size: 70px; font-weight: 900; z-index: 2; text-shadow: 0 0 25px rgba(255,255,255,0.2); }
+        #rocket { 
+            position: absolute; bottom: 15%; left: 10%; font-size: 45px; 
+            z-index: 3; transition: transform 0.1s linear; filter: drop-shadow(0 0 10px var(--aviator-red)); 
+        }
+
+        .bet-footer { background: #1c1c1c; padding: 15px; border-radius: 20px 20px 0 0; flex-shrink: 0; }
+        .bet-card { background: #262626; padding: 15px; border-radius: 15px; border: 1px solid #333; }
+        .bet-btn {
+            background: var(--btn-green); border: none; color: white; width: 100%;
+            padding: 18px; border-radius: 12px; font-size: 22px; font-weight: 900;
+            cursor: pointer; transition: 0.2s;
+        }
+        .bet-btn:active { transform: scale(0.96); }
+        .bet-btn.cashout { background: #f7a200; }
+
+        #profile-drawer {
+            position: absolute; top: 0; right: -100%; width: 85%; height: 100%;
+            background: #1a1a1a; z-index: 1000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 25px; box-sizing: border-box; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+        }
+        #profile-drawer.open { right: 0; }
+        
+        .balance-card {
+            background: linear-gradient(135deg, var(--card-purple) 0%, #1a1a1a 100%);
+            padding: 20px; border-radius: 18px; border: 1px solid #444; margin: 15px 0;
+        }
+        .dep-wit-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-dep { background: var(--aviator-red); border: none; color: white; flex: 1; padding: 14px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .btn-wit { background: var(--btn-purple); border: none; color: white; flex: 1; padding: 14px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+
+        .container-content { padding: 20px; }
+        .back-btn { background: none; border: none; color: var(--msport-yellow); font-size: 16px; cursor: pointer; margin-bottom: 20px; display: flex; align-items: center; font-weight: bold; }
+        .history-card { background: #1a1a1a; border-left: 4px solid #444; padding: 15px; border-radius: 10px; margin-bottom: 12px; border-bottom: 1px solid #333; }
+        
+        @media (max-height: 600px) {
+            #odds-text { font-size: 50px; }
+            .auth-logo { font-size: 30px; }
+            input { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div id="signup-screen" class="screen active auth-screen">
+        <div class="auth-logo">AVIA</div>
+        <h2 style="margin-top:0">Register</h2>
+        <input type="number" id="reg-phone" placeholder="Phone Number">
+        <input type="password" id="reg-pass" placeholder="Password (min 4 chars)">
+        <button class="main-btn" onclick="handleSignup()">Create Account</button>
+        <p onclick="showScreen('login-screen')" style="color:#aaa; cursor:pointer; margin-top:20px">Login instead</p>
+    </div>
+
+    <div id="login-screen" class="screen auth-screen">
+        <div class="auth-logo">AVIA</div>
+        <h2 style="margin-top:0">Welcome Back</h2>
+        <input type="number" id="log-phone" placeholder="Phone Number">
+        <input type="password" id="log-pass" placeholder="Password">
+        <button class="main-btn" id="login-btn" onclick="handleLogin()">Log In</button>
+        <p onclick="showScreen('signup-screen')" style="color:#aaa; cursor:pointer; margin-top:20px">New? Create Account</p>
+    </div>
+
+    <div id="game-screen" class="screen">
+        <div class="header">
+            <span style="color:var(--msport-yellow); font-weight:900; font-style:italic">AVIA</span>
+            <div class="balance-display"><span class="user-bal">0.00</span> <small>NGN</small></div>
+            <div onclick="toggleDrawer()" style="cursor:pointer; font-size: 26px; padding: 5px;">☰</div>
+        </div>
+
+        <div class="game-canvas">
+            <div class="ufc-banner">
+                <div class="ufc-logo">UFC <span style="color:white; font-size:12px; font-style:italic">Avia</span></div>
+                <div id="timer-display" style="font-size:10px; color:var(--msport-yellow); font-weight:bold; margin-top:4px">NEXT FLIGHT: 10s</div>
+            </div>
+            <div id="odds-text">1.00x</div>
+            <div id="rocket">🚀</div>
+        </div>
+
+        <div class="bet-footer">
+            <div class="bet-card">
+                <input type="number" id="bet-amt" value="10.00" style="text-align:center; font-weight:bold; margin-bottom:10px; border-radius: 8px; background: #111;">
+                <button id="action-btn" class="bet-btn" onclick="toggleGame()">BET</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-screen" class="screen">
+        <div class="container-content">
+            <button class="back-btn" onclick="showScreen('game-screen')">← BACK TO GAME</button>
+            <h2 style="color:var(--msport-yellow)">Deposit Funds</h2>
+            <div class="balance-card" style="background: #222;">
+                <p style="margin:0; font-size:12px; color:#aaa">Bank: <b>Paga</b></p>
+                <p style="margin:5px 0; font-size:16px;">Acc: <b>0350878229</b></p>
+                <p style="margin:0; font-size:12px; color:#aaa">Name: Avia-Finance</p>
+            </div>
+            <input type="number" id="dep-amt" placeholder="Amount Sent (NGN)">
+            <input type="text" id="dep-name" placeholder="Sender Account Name">
+            <button class="main-btn" onclick="handleDepositSubmit()">Verify Deposit</button>
+        </div>
+    </div>
+
+    <div id="withdraw-screen" class="screen">
+        <div class="container-content">
+            <button class="back-btn" onclick="showScreen('game-screen')">← BACK TO GAME</button>
+            <h2 style="color:var(--msport-yellow)">Withdraw</h2>
+            <div class="balance-card">
+                <p style="margin:0; font-size:12px">Available Balance</p>
+                <h2 style="margin:10px 0;"><span class="user-bal">0.00</span> NGN</h2>
+            </div>
+            <select id="bank-name"><option>Opay</option><option>Palmpay</option><option>Kuda</option><option>First Bank</option></select>
+            <input type="number" id="acc-num" placeholder="Account Number">
+            <input type="number" id="wit-amt" placeholder="Amount (Min 1,000)">
+            <button class="main-btn" onclick="handleWithdraw()">Request Payout</button>
+        </div>
+    </div>
+
+    <div id="history-screen" class="screen">
+        <div class="container-content">
+            <button class="back-btn" onclick="showScreen('game-screen')">← BACK TO GAME</button>
+            <h2 style="color:var(--msport-yellow)">History</h2>
+            <div id="history-list"></div>
+        </div>
+    </div>
+
+    <div id="admin-screen" class="screen">
+        <div class="container-content">
+            <button class="back-btn" onclick="showScreen('game-screen')">← EXIT ADMIN</button>
+            <h2 style="color:var(--msport-yellow)">Pending Requests</h2>
+            <div id="admin-request-list"></div>
+        </div>
+    </div>
+
+    <div id="profile-drawer">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:10px">
+                <div style="background:var(--msport-yellow); color:black; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold">👤</div>
+                <span id="display-phone" style="font-weight:bold">User</span>
+            </div>
+            <span onclick="toggleDrawer()" style="cursor:pointer; font-size:35px">×</span>
+        </div>
+        <div class="balance-card">
+            <div style="font-size:12px; color:#aaa">Wallet Balance</div>
+            <div style="font-size:30px; font-weight:bold; margin:10px 0;"><span class="user-bal">0.00</span></div>
+            <div class="dep-wit-btns">
+                <button class="btn-dep" onclick="openDeposit()">Deposit</button>
+                <button class="btn-wit" onclick="openWithdraw()">Withdraw</button>
+            </div>
+        </div>
+        <div style="margin-top:30px">
+            <div style="padding:15px 0; border-bottom:1px solid #333; cursor:pointer" onclick="openHistory()">Transaction History ></div>
+            <div style="padding:15px 0; border-bottom:1px solid #333; opacity:0.1" onclick="openAdmin()">Admin Access</div>
+        </div>
+        <button class="main-btn" style="background:#333; color:white; margin-top:50px" onclick="handleLogout()">Logout</button>
+    </div>
+</div>
+
+<script>
+    // --- SECURITY HIDDEN KEYS ---
+    const _0x4f2 = ["bXNwb3J0X3NoYXJlZF92M184MTQ=", "aHR0cHM6Ly9rdnN0b3JlLmNvbS9hcGkvY29sbGVjdGlvbnMv"];
+    const CLOUD_ID = atob(_0x4f2[0]);
+    const API = atob(_0x4f2[1]) + CLOUD_ID + "/items";
+
+    // --- ANTI-CONSOLE HACK ---
+    setInterval(() => {
+        const devtools = /./;
+        devtools.toString = function() {
+            console.clear();
+            return '';
+        };
+    }, 1000);
+
+    let userDb = []; 
+    let allRequests = []; 
+    
+    async function syncFromCloud() {
+        try {
+            const res = await fetch(API);
+            const data = await res.json();
+            userDb = data.users || [];
+            allRequests = data.requests || [];
+        } catch(e) { console.log("Cloud Initializing..."); }
+    }
+
+    async function syncToCloud() {
+        try {
+            await fetch(API, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ users: userDb, requests: allRequests })
+            });
+        } catch(e) { console.error("Sync error"); }
+    }
+
+    syncFromCloud();
+
+    let activeUser = null;
+    let playing = false; 
+    let userHasBet = false; 
+    let odds = 1.00;
+    let gameLoop;
+    let autoCountdown = 10;
+    const targetSequence = [1, 2, 3.58, 7, 19.2, 15.1, 30.2, 49];
+    let sequenceIndex = 0;
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'admin-screen') renderAdminList();
+        if(id === 'history-screen') renderHistory();
+    }
+
+    function toggleDrawer() { document.getElementById('profile-drawer').classList.toggle('open'); }
+    function openWithdraw() { toggleDrawer(); showScreen('withdraw-screen'); }
+    function openDeposit() { toggleDrawer(); showScreen('deposit-screen'); }
+    function openHistory() { toggleDrawer(); showScreen('history-screen'); }
+    function handleLogout() { activeUser = null; toggleDrawer(); showScreen('login-screen'); }
+
+    function openAdmin() {
+        if(prompt("Admin Password:") === "JESUS") { toggleDrawer(); showScreen('admin-screen'); }
+        else { alert("Wrong Password!"); }
+    }
+
+    async function handleSignup() {
+        const ph = document.getElementById('reg-phone').value;
+        const ps = document.getElementById('reg-pass').value;
+        if(ph.length < 5 || ps.length < 4) return alert("Fill correctly");
+        
+        await syncFromCloud();
+        if(userDb.find(u => u.phone === ph)) return alert("Number exists!");
+        
+        userDb.push({ phone: ph, pass: ps, balance: 4.23, history: [] });
+        await syncToCloud();
+        alert("Account Created! You can now log in on any phone.");
+        showScreen('login-screen');
+    }
+
+    async function handleLogin() {
+        const ph = document.getElementById('log-phone').value;
+        const ps = document.getElementById('log-pass').value;
+        const btn = document.getElementById('login-btn');
+        btn.innerText = "Syncing...";
+
+        await syncFromCloud();
+        const user = userDb.find(u => u.phone === ph && u.pass === ps);
+        
+        if(user) {
+            activeUser = user;
+            document.getElementById('display-phone').innerText = ph;
+            updateBalance();
+            showScreen('game-screen');
+            startGlobalTimer(); 
+        } else { 
+            alert("Login failed. No account found."); 
+            btn.innerText = "Log In";
+        }
+    }
+
+    function updateBalance() {
+        if(activeUser) {
+            document.querySelectorAll('.user-bal').forEach(el => el.innerText = activeUser.balance.toFixed(2));
+            syncToCloud();
+        }
+    }
+
+    function startGlobalTimer() {
+        setInterval(() => {
+            if(!playing) {
+                autoCountdown--;
+                document.getElementById('timer-display').innerText = "NEXT FLIGHT: " + autoCountdown + "s";
+                if(autoCountdown <= 0) {
+                    startRocket();
+                }
+            }
+        }, 1000);
+    }
+
+    function saveToHistory(type, amount, status, cssClass) {
+        if(!activeUser.history) activeUser.history = [];
+        activeUser.history.unshift({ type, amount, status, cssClass, date: new Date().toLocaleTimeString() });
+        syncToCloud();
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('history-list');
+        list.innerHTML = activeUser.history.length ? "" : "<p>No history</p>";
+        activeUser.history.forEach(tx => {
+            list.innerHTML += `<div class="history-card" style="border-left-color:${tx.cssClass === 'tx-win' ? '#28a745' : '#d91d36'}">
+                <div style="display:flex; justify-content:space-between"><b>${tx.type}</b> <span>${tx.amount} NGN</span></div>
+                <div style="font-size:11px; color:#aaa; margin-top:5px">${tx.status} • ${tx.date}</div>
+            </div>`;
+        });
+    }
+
+    async function handleDepositSubmit() {
+        const amt = parseFloat(document.getElementById('dep-amt').value);
+        const name = document.getElementById('dep-name').value;
+        if(!amt || !name) return alert("Fill all fields");
+        
+        allRequests.push({ type: 'DEPOSIT', phone: activeUser.phone, amount: amt, sender: name, status: 'Pending' });
+        saveToHistory('Deposit Request', amt, 'Pending Verification', 'tx-loss');
+        await syncToCloud();
+        alert("Submitted!"); 
+        showScreen('game-screen');
+    }
+
+    async function handleWithdraw() {
+        const amt = parseFloat(document.getElementById('wit-amt').value);
+        if(amt < 1000 || amt > activeUser.balance) return alert("Invalid amount or insufficient funds");
+        
+        allRequests.push({ type: 'WITHDRAWAL', phone: activeUser.phone, amount: amt, status: 'Pending' });
+        activeUser.balance -= amt;
+        saveToHistory('Withdrawal', amt, 'Processing', 'tx-loss');
+        updateBalance();
+        alert("Withdrawal Requested!"); showScreen('game-screen');
+    }
+
+    function renderAdminList() {
+        const list = document.getElementById('admin-request-list');
+        list.innerHTML = "";
+        allRequests.forEach((req, i) => {
+            if(req.status === 'Pending') {
+                list.innerHTML += `<div class="admin-card" style="background:#222; padding:15px; border-radius:10px; margin-bottom:10px">
+                    <b>${req.type}</b> - ${req.phone}<br>Amount: ${req.amount} NGN<br>
+                    <button class="main-btn" style="margin-top:10px; padding:10px" onclick="confirmRequest(${i})">APPROVE</button>
+                </div>`;
+            }
+        });
+    }
+
+    async function confirmRequest(index) {
+        const req = allRequests[index];
+        const user = userDb.find(u => u.phone === req.phone);
+        if(req.type === 'DEPOSIT' && user) user.balance += req.amount;
+        req.status = 'Approved';
+        updateBalance();
+        renderAdminList();
+        alert("Approved!");
+    }
+
+    function toggleGame() {
+        const btn = document.getElementById('action-btn');
+        const bet = parseFloat(document.getElementById('bet-amt').value);
+
+        if(!playing) {
+            if(!userHasBet) {
+                if(activeUser.balance < bet) return alert("Insufficient Balance!");
+                activeUser.balance -= bet;
+                updateBalance();
+                userHasBet = true;
+                btn.innerText = "WAITING...";
+                btn.style.opacity = "0.6";
+            }
+        } else {
+            if(userHasBet) {
+                let winAmt = bet * odds;
+                activeUser.balance += winAmt;
+                saveToHistory('Aviator Win', winAmt.toFixed(2), 'Success', 'tx-win');
+                updateBalance();
+                userHasBet = false;
+                btn.innerText = "BET";
+                btn.classList.remove('cashout');
+                btn.style.opacity = "1";
+                alert("Won: " + winAmt.toFixed(2) + " NGN");
+            }
+        }
+    }
+
+    function startRocket() {
+        playing = true;
+        autoCountdown = 10; 
+        const rocket = document.getElementById('rocket');
+        const oddsTxt = document.getElementById('odds-text');
+        const btn = document.getElementById('action-btn');
+        
+        if(userHasBet) {
+            btn.innerText = "CASH OUT";
+            btn.classList.add('cashout');
+            btn.style.opacity = "1";
+        }
+
+        const crashAt = targetSequence[sequenceIndex];
+        sequenceIndex = (sequenceIndex + 1) % targetSequence.length;
+
+        gameLoop = setInterval(() => {
+            odds += 0.01;
+            oddsTxt.innerText = odds.toFixed(2) + "x";
+            let move = (odds - 1) * 60;
+            rocket.style.transform = `translate(${move}px, -${move}px)`;
+            
+            if(odds >= crashAt) {
+                clearInterval(gameLoop);
+                oddsTxt.innerText = "FLEW AWAY!";
+                oddsTxt.style.color = "var(--aviator-red)";
+                
+                if(userHasBet) {
+                    const betAmt = parseFloat(document.getElementById('bet-amt').value);
+                    saveToHistory('Aviator Loss', betAmt, 'Loss', 'tx-loss');
+                }
+                
+                playing = false;
+                userHasBet = false;
+                setTimeout(resetGame, 2000);
+            }
+        }, 80);
+    }
+
+    function resetGame() {
+        clearInterval(gameLoop);
+        playing = false;
+        userHasBet = false;
+        odds = 1.00;
+        const btn = document.getElementById('action-btn');
+        btn.innerText = "BET";
+        btn.classList.remove('cashout');
+        btn.style.opacity = "1";
+        document.getElementById('odds-text').innerText = "1.00x";
+        document.getElementById('odds-text').style.color = "white";
+        document.getElementById('rocket').style.transform = "translate(0,0)";
+        document.getElementById('timer-display').innerText = "NEXT FLIGHT: 10s";
+    }
+</script>
+</body>
+</html>
